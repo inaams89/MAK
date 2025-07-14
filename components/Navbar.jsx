@@ -1,0 +1,167 @@
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhoneAlt, FaEnvelope, FaBars, FaTimes } from "react-icons/fa";
+import { RiArrowRightUpLine } from "react-icons/ri";
+
+
+export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const serverUrl = process.env.NEXT_PUBLIC_DJANGO_URLS;
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`${serverUrl}setting/`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch services");
+        }
+        const data = await response.json();
+        setServices(data[0]);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  return (
+    <header className="shadow-lg sticky top-0 z-50 bg-white">
+      {/* Top Header with Contact Info & Social Media */}
+      <div className="bg-gradient-to-r from-[#060505] to-[#1a1a1a] text-white py-2 text-sm px-14">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-8">
+          {/* Contact Information */}
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+            {/* Phone Number */}
+            <div className="flex items-center space-x-2">
+              <FaPhoneAlt size={16} className="text-red-500" />
+              <Link
+                href={`tel:${services?.phone}`}
+                aria-label={services?.phone}
+                className="hover:underline hover:text-red-500 transition duration-300 font-medium"
+              >
+                {services?.phone}
+              </Link>
+            </div>
+
+            <span className="hidden md:inline text-white">|</span>
+
+            {/* Email Address */}
+            <div className="flex items-center space-x-2">
+              <FaEnvelope size={16} className="text-red-500" />
+              <Link
+                href={`mailto:${services?.email}`}
+                aria-label={services?.email}
+                className="hover:underline hover:text-red-500 transition duration-300 font-medium"
+              >
+                {services?.email}
+              </Link>
+            </div>
+          </div>
+
+          {/* Social Media Links */}
+          <div className="flex items-center space-x-4 mt-2 md:mt-0">
+            {[
+              { icon: <FaFacebookF size={16} />, href: services?.facedbook || '#', color: "hover:text-red-500" },
+              { icon: <FaTwitter size={16} />, href: services?.xurl || '#', color: "hover:text-red-500" },
+              { icon: <FaInstagram size={16} />, href: services?.instagram || '#', color: "hover:text-red-500" },
+              { icon: <FaLinkedinIn size={16} />, href: services?.linkedin || '#', color: "hover:text-red-500" },
+            ].map((social, index) => (
+              <Link
+                key={index}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.href}
+                className={`text-white ${social.color} transition duration-300 hover:scale-110`}
+              >
+                {social.icon}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navigation */}
+      <div className="container mx-auto px-14 py-4 flex items-center justify-between">
+        {/* Logo and Menus */}
+        <div className="flex items-center space-x-8">
+          {/* Logo / Site Title */}
+          <div className="text-3xl font-extrabold">
+            <Link href="/" className="hover:opacity-80 transition duration-300">
+              <Image
+                width={200} // Adjusted logo size
+                height={40} // Adjusted logo size
+                aria-label="Mak Security"
+                alt="Mak Security"
+                src="https://usercontent.one/wp/www.mak-security.co.uk/wp-content/uploads/2019/06/Mak-Security-Logo-300x60.png?media=1718891222"
+              />
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-12">
+            {["Home", "Service", "Areas Covered", "News"].map((item) => (
+              <Link
+                key={item}
+                href={item.toLowerCase() === "home" ? "/" : `/${item.toLowerCase().replace(/\s/g, "-")}`}
+                className="text-gray-700 font-medium hover:text-red-500 transition duration-300 relative group"
+              >
+              {item}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Contact Menu with Button and Icon */}
+        <div className="hidden md:flex items-center space-x-4">
+  <Link
+    href="/contact"
+    className="flex items-center space-x-2 bg-red-500 text-white px-6 py-3 rounded-lg transition duration-300 shadow-lg hover:shadow-xl hover:bg-[#000]"
+  >
+    <span>Contact</span>
+    <RiArrowRightUpLine size={18} className="animate-bounce-horizontal" />
+  </Link>
+</div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-700 focus:outline-none hover:text-red-500 transition duration-300"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden bg-gradient-to-r from-[#060505] to-[#1a1a1a] text-white py-4 transition-all duration-300 ease-in-out ${
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
+        <ul className="space-y-3 text-center">
+          {["Home", "Service", "Areas Covered", "News", "Contact"].map((item) => (
+            <li key={item}>
+              <Link
+                href={item.toLowerCase() === "home" ? "/" : `/${item.toLowerCase().replace(/\s/g, "-")}`}
+                className="text-white font-medium hover:text-red-500 transition duration-300"
+                onClick={() => setIsOpen(false)}
+              >
+                {item}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
+  );
+}
