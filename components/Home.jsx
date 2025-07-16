@@ -12,7 +12,7 @@ import Features from './Features';
 import SocialMediaTestimonialsPage from './Social';
 import AccreditationPage from './Accreditation';
 import DirectorsMessage from './Adirector';
-import WhyChooseMakSecurity from './Why';
+import WhyChooseMakSecurity from './why';
 import SocialMedia from './SocialMedia'
 
 
