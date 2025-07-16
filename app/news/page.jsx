@@ -1,47 +1,96 @@
+// app/news/page.jsx
+import News from '@/components/NewsComponent';
+import { client } from '@/sanity/client';
 
-import News from "@/components/NewsComponent";
-import Services from "@/components/ServiceComponet";
+export async function generateMetadata() {
+  const newsSeo = await client.fetch(
+    `*[_type == "seo" && type == "newsSeo"][0]{
+      metaName,
+      metaDescription,
+      keywords
+    }`
+  );
 
+  return {
+    title: newsSeo?.metaName || 'Mak Security UK | Latest News & Articles',
+    description:
+      newsSeo?.metaDescription ||
+      'Stay updated with the latest news and articles from Mak Security UK, covering security services, industry insights, and more.',
+    keywords: newsSeo?.keywords?.join(', ') || [
+      'security services',
+      'manned guarding',
+      'CCTV surveillance',
+      'alarm response',
+      'security consultancy',
+      'UK security',
+      'property security',
+      'commercial security',
+      'event security',
+      'Mak Security UK',
+    ],
+    openGraph: {
+      title: newsSeo?.metaName || 'Mak Security UK | Latest News & Articles',
+      description:
+        newsSeo?.metaDescription ||
+        'Stay updated with the latest news and articles from Mak Security UK, covering security services, industry insights, and more.',
+      url: 'https://mak-security-uk/news',
+      images: ['/images/mak-security-logo.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: newsSeo?.metaName || 'Mak Security UK | Latest News & Articles',
+      description:
+        newsSeo?.metaDescription ||
+        'Stay updated with the latest news and articles from Mak Security UK, covering security services, industry insights, and more.',
+      images: ['/images/mak-security-logo.png'],
+    },
+  };
+}
 
-
-export async function fetchInitialdetails() {
-
-  const serverurls = process.env.NEXT_PUBLIC_DJANGO_URLS;
- 
- 
+export async function fetchNewsArticles() {
   try {
-    
-    const response = await fetch(`${serverurls}newseo/`);
-    const data = await response.json();
-    console.log("data",response)
+    const articles = await client.fetch(`
+      *[_type == "newsArticle"] | order(publishedDate desc) {
+        title,
+        subtitle,
+        slug,
+        "image": image.asset->url,
+        image { alt },
+        publishedDate
+      }
+    `);
 
-// console.log("data",response)
-//     const result = await response.json();
-    if (!response.ok) {
-      console.error("Failed to fetch properties:", response.statusText);
-      return null;
+    if (!articles || articles.length === 0) {
+      console.error('No news articles found');
+      return [];
     }
 
-    
-
-    return data;
-
+    return articles;
   } catch (error) {
-    console.error("An error occurred while fetching properties:", error);
+    console.error('Error fetching news articles:', error);
+    return [];
+  }
+}
+
+export async function fetchNewsSeo() {
+  try {
+    const newsSeo = await client.fetch(`
+      *[_type == "seo" && type == "newsSeo"][0]{
+        metaName,
+        metaDescription,
+        keywords
+      }
+    `);
+    return newsSeo || null;
+  } catch (error) {
+    console.error('Error fetching newsSeo:', error);
     return null;
   }
 }
 
 export default async function Page() {
+  const newsArticles = await fetchNewsArticles();
+  const newsSeo = await fetchNewsSeo();
 
-  const initialservice = await fetchInitialdetails();
-
-
-
-
-  return <News news={initialservice[0]}  />;
+  return <News news={newsSeo} services={newsArticles} />;
 }
-
-
-
-

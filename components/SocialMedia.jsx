@@ -1,53 +1,44 @@
+'use client';
+
 import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
-const SocialMedia = ({ socialata }) => {
+export default function SocialMedia({ social = [] }) {
   return (
     <div className="flex flex-wrap justify-center gap-4 my-4">
-      {/* Facebook Icon */}
-      <Link
-        href={`${socialata?.facedbook || "#"}`}
-        target="_blank"
-        aria-label={socialata?.facedbook || "#"}
-        rel="noopener noreferrer"
-        className="social-icon bg-blue-600 p-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 hover:shadow-lg w-12 h-12 flex items-center justify-center"
-      >
-        <FaFacebookF className="text-white text-xl" />
-      </Link>
-
-      {/* Twitter Icon */}
-      <Link
-        href={`${socialata?.xurl || "#"}`}
-        target="_blank"
-        aria-label={socialata?.xurl || "#"}
-        rel="noopener noreferrer"
-        className="social-icon bg-blue-400 p-3 rounded-full hover:bg-blue-500 transition-all duration-300 transform hover:scale-110 hover:shadow-lg w-12 h-12 flex items-center justify-center"
-      >
-        <FaTwitter className="text-white text-xl" />
-      </Link>
-
-      {/* Instagram Icon */}
-      <Link
-        href={`${socialata?.instagram || "#"}`}
-        target="_blank"
-        aria-label={socialata?.instagram || "#"}
-        rel="noopener noreferrer"
-        className="social-icon bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-110 hover:shadow-lg w-12 h-12 flex items-center justify-center"
-      >
-        <FaInstagram className="text-white text-xl" />
-      </Link>
-
-      {/* LinkedIn Icon */}
-      <Link
-        href={`${socialata?.linkedin || "#"}`}
-        target="_blank"
-        aria-label={socialata?.linkedin || "#"}
-        rel="noopener noreferrer"
-        className="social-icon bg-blue-700 p-3 rounded-full hover:bg-blue-800 transition-all duration-300 transform hover:scale-110 hover:shadow-lg w-12 h-12 flex items-center justify-center"
-      >
-        <FaLinkedinIn className="text-white text-xl" />
-      </Link>
+      {social.length > 0 ? (
+        social.map((link, index) => {
+          const platformIcons = {
+            Facebook: FaFacebookF,
+            Twitter: FaTwitter,
+            Instagram: FaInstagram,
+            LinkedIn: FaLinkedinIn,
+          };
+          const IconComponent = platformIcons[link.platform] || FaFacebookF;
+          return (
+            <Link
+              key={index}
+              href={link.url || '#'}
+              target="_blank"
+              aria-label={link.platform || 'Social Media'}
+              rel="noopener noreferrer"
+              className={`social-icon p-3 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg w-12 h-12 flex items-center justify-center ${
+                link.platform === 'Facebook'
+                  ? 'bg-blue-600 hover:bg-blue-700'
+                  : link.platform === 'Twitter'
+                  ? 'bg-blue-400 hover:bg-blue-500'
+                  : link.platform === 'Instagram'
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                  : 'bg-blue-700 hover:bg-blue-800'
+              }`}
+            >
+              <IconComponent className="text-white text-xl" />
+            </Link>
+          );
+        })
+      ) : (
+        <p className="text-gray-500">No social media links available.</p>
+      )}
     </div>
   );
-};
-export default SocialMedia;
+}

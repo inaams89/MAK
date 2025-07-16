@@ -2,7 +2,7 @@
 const nextConfig = {
   
       images: {
-        domains: ['157.245.40.103','encrypted-tbn0.gstatic.com','usercontent.one'],
+        domains: ['157.245.40.103','encrypted-tbn0.gstatic.com','usercontent.one','cdn.sanity.io'],
       },
       
       compiler: { removeConsole: true } ,

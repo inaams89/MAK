@@ -1,46 +1,27 @@
-
+// app/services/page.js
+import { client } from '@/sanity/client'; // Adjust the path to your Sanity client
 import Services from "@/components/ServiceComponet";
 
-
-
-export async function fetchInitialdetails() {
-
-  const serverurls = process.env.NEXT_PUBLIC_DJANGO_URLS;
- 
- 
+export async function fetchInitialDetails() {
   try {
-    
-    const response = await fetch(`${serverurls}serviceseo/`);
-    const data = await response.json();
-    console.log("data",response)
+    // Fetch the first serviceSeo document
+    const query = `*[_type == "seo" && type == "serviceSeo"][0]`;
+    const data = await client.fetch(query);
 
-// console.log("data",response)
-//     const result = await response.json();
-    if (!response.ok) {
-      console.error("Failed to fetch properties:", response.statusText);
+    if (!data) {
+      console.error('No serviceSeo data found');
       return null;
     }
 
-    
-
     return data;
-
   } catch (error) {
-    console.error("An error occurred while fetching properties:", error);
+    console.error('An error occurred while fetching serviceSeo:', error);
     return null;
   }
 }
 
 export default async function Page() {
+  const initialService = await fetchInitialDetails();
 
-  const initialservice = await fetchInitialdetails();
-
-
-
-
-  return <Services service={initialservice[0]}  />;
+  return <Services service={initialService} />;
 }
-
-
-
-

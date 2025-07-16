@@ -1,45 +1,27 @@
+// app/areas-covered/page.js
+import { client } from '@/sanity/client'; // Adjust the path to your Sanity client
+import ServiceArea from '@/components/ServiceArea';
 
-import ServiceArea from "@/components/ServiceArea";
-
-
-
-export async function fetchInitialdetails() {
-
-  const serverurls = process.env.NEXT_PUBLIC_DJANGO_URLS;
- 
- 
+export async function fetchInitialDetails() {
   try {
-    
-    const response = await fetch(`${serverurls}serviceareaseo/`);
-    const data = await response.json();
+    // Fetch the first serviceAreaSeo document
+    const query = `*[_type == "seo" && type == "serviceAreaSeo"][0]`;
+    const data = await client.fetch(query);
 
-// console.log("data",response)
-//     const result = await response.json();
-    if (!response.ok) {
-      console.error("Failed to fetch properties:", response.statusText);
+    if (!data) {
+      console.error('No serviceAreaSeo data found');
       return null;
     }
 
-    
-
     return data;
-
   } catch (error) {
-    console.error("An error occurred while fetching properties:", error);
+    console.error('An error occurred while fetching serviceAreaSeo:', error);
     return null;
   }
 }
 
 export default async function Page() {
+  const initialService = await fetchInitialDetails();
 
-  const initialservice = await fetchInitialdetails();
-
-
-
-
-  return <ServiceArea service={initialservice[0]}  />;
+  return <ServiceArea service={initialService} />;
 }
-
-
-
-

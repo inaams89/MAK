@@ -1,57 +1,83 @@
-import Contact from "@/components/Contact";
-import Home from "@/components/Home";
-import News from "@/components/NewsComponent";
-import ServiceArea from "@/components/ServiceArea";
-import Services from "@/components/ServiceComponet";
-// Define all endpoints in a single object for easy management
-const ENDPOINTS = {
-  homeDetail: "setting/",
- 
-};
+// app/contact/page.jsx
+import { client } from '@/sanity/client';
+import Contact from '@/components/Contact';
 
-// Helper function to fetch data from a given endpoint
-async function fetchData(endpoint) {
-  const serverUrl = process.env.NEXT_PUBLIC_DJANGO_URLS;
-  if (!serverUrl) {
-    throw new Error("Server URL is not defined in environment variables.");
-  }
+export async function generateMetadata() {
+  const contactData = await client.fetch(
+    `*[_type == "contact"][0]{
+      title,
+      seo {
+        metaName,
+        metaDescription,
+        keywords
+      }
+    }`
+  );
 
-  const response = await fetch(`${serverUrl}${endpoint}`, { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data from ${endpoint}`);
-  }
-  return response.json();
+  return {
+    title: contactData?.seo?.metaName || 'Mak Security UK | Contact Us',
+    description:
+      contactData?.seo?.metaDescription ||
+      'Get in touch with Mak Security UK for professional security solutions, including manned guarding, CCTV surveillance, and more.',
+    keywords:
+      contactData?.seo?.keywords?.join(', ') ||
+      'security services, manned guarding, CCTV surveillance, alarm response, security consultancy, UK security, property security, commercial security, event security, Mak Security UK',
+    openGraph: {
+      title: contactData?.seo?.metaName || 'Mak Security UK | Contact Us',
+      description:
+        contactData?.seo?.metaDescription ||
+        'Get in touch with Mak Security UK for professional security solutions.',
+      url: 'https://mak-security-uk/contact',
+      images: ['/images/mak-security-logo.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: contactData?.seo?.metaName || 'Mak Security UK | Contact Us',
+      description:
+        contactData?.seo?.metaDescription ||
+        'Get in touch with Mak Security UK for professional security solutions.',
+      images: ['/images/mak-security-logo.png'],
+    },
+  };
 }
 
-// Fetch all initial data in parallel
-export async function fetchInitialDetails() {
+export async function fetchContactData() {
   try {
-    const data = await Promise.all(
-      Object.values(ENDPOINTS).map((endpoint) => fetchData(endpoint))
+    const contactData = await client.fetch(
+      `*[_type == "contact"][0]{
+        title,
+        subtitle,
+        content,
+        "image": image.asset->url,
+        image { alt },
+        email,
+        phone,
+        address,
+        seo {
+          metaName,
+          metaDescription,
+          keywords
+        }
+      }`,
+      {},
+      { next: { revalidate: 60 } }
     );
 
-    // Map the fetched data to the corresponding keys
-    const initialData = Object.keys(ENDPOINTS).reduce((acc, key, index) => {
-      acc[key] = data[index];
-      return acc;
-    }, {});
+    if (!contactData) {
+      console.error('No contact data found');
+      return null;
+    }
 
-    return initialData;
+    return contactData;
   } catch (error) {
-    console.error("An error occurred while fetching data:", error);
+    console.error('Error fetching contact data:', error);
     return null;
   }
 }
 
 export default async function Page() {
-  
-  const initialData = await fetchInitialDetails();
-
-  // if (!initialData) {
-  //   return <div>Error loading data. Please try again later.</div>;
-  // }
-
-  return <Contact homeDetail={initialData} />;
+  const contactData = await fetchContactData();
 
 
+  return <Contact contactData={contactData} />;
 }
