@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Head from 'next/head';
 import './slider.css';
+import { H5 } from './Tyograohy';
 
 const Hero = ({ slider = [] }) => {
   const progressCircle = useRef(null);
@@ -150,7 +151,7 @@ const Hero = ({ slider = [] }) => {
                       className="bg-white text-black p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg mb-4"
                       style={{ minWidth: '300px', maxWidth: '700px' }}
                     >
-                      <h2 className="text-2xl font-bold text-red-500 mb-4">Get In Touch</h2>
+                      <H5 className="text-2xl font-bold text-red-500 mb-4">Get In Touch</H5>
                       <form className="space-y-4" onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>

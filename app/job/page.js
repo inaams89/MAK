@@ -353,7 +353,7 @@ export default function JobsList() {
                       {job.image && (
                         <img
                           src={urlFor(job.image).width(400).height(200).url()}
-                          alt={job.title}
+                          alt={job.title || 'job'}
                           className="w-full h-56 object-cover rounded-t-2xl"
                           loading="lazy"
                         />

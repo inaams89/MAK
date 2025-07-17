@@ -9,7 +9,7 @@ export default function AccradationCard({ accreditation }) {
       {accreditation.logo && (
         <Image
           src={accreditation.logo}
-          alt={accreditation.name}
+          alt={accreditation.name || 'accreadtion'}
           width={100}
           height={100}
           className="mx-auto mb-4"

@@ -53,7 +53,7 @@ export default function News({ news, services }) {
                 {service.image && (
                   <img
                     src={urlFor(service.image).url()}
-                    alt={service.image.alt || service.title}
+                    alt={service.image.alt || service.title || 'service'}
                     className="w-full h-48 object-cover rounded-t-lg mb-4"
                   />
                 )}

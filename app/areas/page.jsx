@@ -8,7 +8,7 @@ export default async function ServiceAreasPage() {
       {serviceAreas.map((area) => (
         <div key={area.slug.current}>
           <h2>{area.title}</h2>
-          {area.image && <img src={area.image.asset.url} alt={area.title} />}
+          {area.image && <img src={area.image.asset.url} alt={area.title || 'Service Area image'} />}
         </div>
       ))}
     </div>

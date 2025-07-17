@@ -20,12 +20,15 @@ const Services = ({ services = [] }) => {
                 We supply and manage trained SIA licensed Security Officers who specialize in Manned Security Guarding, Event Security, and Mobile Patrolling. Rest assured, your property is in safe hands.
               </p>
               <div className="mt-4 flex justify-center md:justify-start">
-                <Link href="/services" legacyBehavior>
-                  <a className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition duration-300">
-                    <span className="text-red-500 font-semibold">See More</span>
-                    <IoArrowForwardOutline size={16} className="animate-bounce-horizontal text-red-500" />
-                  </a>
-                </Link>
+               <Link href="/services" legacyBehavior>
+  <a
+    className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition duration-300"
+    aria-label="View all available services"
+  >
+    <span className="text-red-500 font-semibold">View All Services</span>
+    <IoArrowForwardOutline size={16} className="animate-bounce-horizontal text-red-500" />
+  </a>
+</Link>
               </div>
             </div>
           </div>
@@ -65,15 +68,18 @@ const Services = ({ services = [] }) => {
                     {service.name}
                   </h3>
                   <div className="flex justify-center">
-                    <Link href={`/service/${service.slug?.current || '#'}`} legacyBehavior>
-                      <a className="flex items-center space-x-2 text-white hover:text-gray-200 transition duration-300 animate-pulse">
-                        <span>Read More</span>
-                        <IoArrowForwardOutline
-                          size={16}
-                          className="animate-bounce-horizontal flex justify-center mt-[2px]"
-                        />
-                      </a>
-                    </Link>
+                  <Link href={`/service/${service.slug?.current || '#'}`} legacyBehavior>
+  <a
+    className="flex items-center space-x-2 text-white hover:text-gray-200 transition duration-300 animate-pulse"
+    aria-label={`Learn more about ${service.title || 'this service'}`}
+  >
+    <span>{ 'View Service'}</span>
+    <IoArrowForwardOutline
+      size={16}
+      className="animate-bounce-horizontal flex justify-center mt-[2px]"
+    />
+  </a>
+</Link>
                   </div>
                 </div>
                 <div className="absolute inset-0 rounded-xl overflow-hidden">

@@ -99,7 +99,7 @@ const Services = ({ service }) => {
                   {service.image && (
                     <img
                       src={service.image}
-                      alt={service.name}
+                      alt={service.name || "service"}
                       className="w-full h-48 object-cover rounded-t-lg mb-4"
                     />
                   )}

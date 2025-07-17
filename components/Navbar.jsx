@@ -123,54 +123,55 @@ export default function Header() {
             </Link>
 
             {/* Service Dropdown */}
-            {serviceCategories.length > 0 && (
-              <div
-                className="relative"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                <button
-                  className="text-gray-700 font-medium hover:text-red-500 transition duration-300 relative group flex items-center"
-                  aria-haspopup="true"
-                  onClick={() => router.push('/service')}
-
-                  aria-expanded={dropdownOpen}
-                >
-                  Services
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
-                </button>
-                {dropdownOpen && (
-                  <div className="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 w-64 z-50">
-                    {serviceCategories.map((category) => (
-                      <div key={category._id} className="px-4 py-2">
-                        <Link
-                          href={`/service/${category.slug.current}`}
-                          className="block text-gray-700 font-medium hover:text-red-500 transition duration-300"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {category.name}
-                        </Link>
-                        {category.subServices && category.subServices.length > 0 && (
-                          <ul className="ml-4 mt-2 space-y-2">
-                            {category.subServices.map((subService) => (
-                              <li key={subService._id}>
-                                <Link
-                                  href={`/service/${category.slug.current}/${subService.slug.current}`}
-                                  className="block text-gray-600 text-sm hover:text-red-500 transition duration-300"
-                                  onClick={() => setDropdownOpen(false)}
-                                >
-                                  {subService.title}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+           {serviceCategories.length > 0 && (
+  <div
+    className="relative"
+    onMouseEnter={() => setDropdownOpen(true)}
+    onMouseLeave={() => setDropdownOpen(false)}
+  >
+    <button
+      className="text-gray-700 font-medium hover:text-red-500 transition duration-300 relative group flex items-center"
+      aria-haspopup="true"
+      onClick={() => router.push('/service')}
+      aria-expanded={dropdownOpen}
+    >
+      Services
+      <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
+    </button>
+    {dropdownOpen && (
+      <div className="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 w-64 z-50">
+        {serviceCategories.map((category) => (
+          <div key={category._id} className="px-4 py-2">
+            <Link
+              href={`/service/${category.slug.current}`}
+              aria-label={`Explore ${category.name} services`}
+              className="block text-gray-700 font-medium hover:text-red-500 transition duration-300"
+              onClick={() => setDropdownOpen(false)}
+            >
+              {category.name} {/* e.g., "Security Services" */}
+            </Link>
+            {category.subServices && category.subServices.length > 0 && (
+              <ul className="ml-4 mt-2 space-y-2">
+                {category.subServices.map((subService) => (
+                  <li key={subService._id}>
+                    <Link
+                      href={`/service/${category.slug.current}/${subService.slug.current}`}
+                      aria-label={`Learn more about ${subService.title} in ${category.name}`}
+                      className="block text-gray-600 text-sm hover:text-red-500 transition duration-300"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      {subService.title} {/* e.g., "CCTV Installation" */}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
 
             {/* Areas Covered */}
             {serviceAreas.length > 0 && (

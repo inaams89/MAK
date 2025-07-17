@@ -63,7 +63,7 @@ const TestimonialCard = ({ testimonial }) => {
           <Image  src={
               testimonial?.image ||
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYP-KKtRJXm9qK7k2_PA1utxbxWdpzGIdulQ&s"
-            } alt={testimonial.client_name} width={56} height={56} />
+            } alt={testimonial.client_name || 'Mak Security'} width={56} height={56} />
         </div>
       </div>
 

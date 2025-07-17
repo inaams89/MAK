@@ -5,11 +5,46 @@ import { useMemo } from 'react';
 import { H4 } from './Tyograohy';
 import { IoArrowForwardOutline } from 'react-icons/io5';
 import Link from 'next/link';
+import { data } from 'autoprefixer';
+import { PortableText } from '@portabletext/react';
+import { useState } from 'react';
 
+const portableTextComponents = {
+  types: {
+    image: ({ value }) => (
+      <img
+        src={value.asset ? urlFor(value).url() : ''}
+        alt={value.alt || 'News Article Image'}
+        style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+        className="my-4"
+      />
+    ),
+  },
+  block: {
+    normal: ({ children }) => <p className="leading-relaxed">{children}</p>,
+  },
+};
 const WhyChooseUs = ({ whyus }) => {
   console.log("why us")
   const features = useMemo(() => whyus?.benefits || [], [whyus]);
+const [expanded, setExpanded] = useState(false);
 
+  const getTextFromBlocks = (blocks) => {
+    return blocks
+      .map(block => {
+        if (block._type === 'block' && block.children) {
+          return block.children.map(child => child.text).join(' ');
+        }
+        return '';
+      })
+      .join(' ')
+      .trim();
+  };
+
+  const fullText = getTextFromBlocks(whyus.content);
+  const wordCount = fullText.split(/\s+/).length;
+
+  const truncatedText = fullText.split(/\s+/).slice(0, 200).join(' ') + '...';
   console.log("Features",features);
 
   return (
@@ -22,24 +57,35 @@ const WhyChooseUs = ({ whyus }) => {
             <H4 className="text-5xl md:text-6xl font-bold text-black text-center md:text-left">
               {whyus?.title || 'Why Us'}
             </H4>
-<H4 className="text-5xl md:text-6xl font-bold text-black text-center md:text-left">
-              {whyus.benefits.map((data)=>{
-                data
-              }) || 'Why Us'}
-            </H4>
+
             {/* Description and Learn More Button */}
             <div className="text-left max-w-2xl">
-              <p className="text-black text-md md:text-md opacity-90 leading-normal">
-                Based in Manchester, Liverpool, and Birmingham - MAK Security is a reputable security services company serving clients across the UK. We are experts in implementing security procedures to proactively prevent theft and crime.
-              </p>
-              <div className="mt-6 flex justify-center md:justify-start">
+ <div className="text-black text-md md:text-md opacity-90 leading-normal">
+      {wordCount <= 20 || expanded ? (
+        <PortableText value={whyus.content} components={portableTextComponents} />
+      ) : (
+        <p>{truncatedText}</p>
+      )}
+
+      {wordCount > 20 && (
+    <button
+  onClick={() => setExpanded(!expanded)}
+  className="flex items-center space-x-2 text-red-500 hover:text-red-600 mt-2 transition duration-300 font-semibold"
+>
+  <span>{expanded ? 'View Less' : 'View More'}</span>
+  {!expanded && <IoArrowForwardOutline size={18} className="animate-bounce-horizontal" />}
+</button>
+      )}
+    </div>                
+             
+              {/* <div className="mt-6 flex justify-center md:justify-start">
                 <Link href="/why-us" legacyBehavior>
                   <a className="flex items-center space-x-2 text-red-500 hover:text-red-600 transition duration-300">
                     <span className="font-semibold">Learn More</span>
                     <IoArrowForwardOutline size={18} className="animate-bounce-horizontal" />
                   </a>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -49,8 +95,8 @@ const WhyChooseUs = ({ whyus }) => {
       <section className="bg-gray-200 flex justify-center mb-16 items-center py-2 px-8 relative overflow-hidden">
         <div className="relative z-10 max-w-8xl w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-           
-              {whyus.benefits.map((feature, index) => {
+            {features.length > 0 ? (
+              features.map((feature, index) => {
                 const IconComponent = FaIcons[feature.icon] || FaIcons.FaQuestionCircle;
 
                 return (
@@ -63,7 +109,6 @@ const WhyChooseUs = ({ whyus }) => {
                     </div>
                     <h3 className="mt-6 text-xl font-[500] text-white group-hover:text-white duration-300">
                       {feature.title}
-                      
                     </h3>
                     <div className="absolute inset-0 rounded-xl overflow-hidden">
                       <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-800 opacity-10 transition-opacity duration-500 animate-float"></div>
@@ -71,7 +116,9 @@ const WhyChooseUs = ({ whyus }) => {
                   </div>
                 );
               })
-            }
+            ) : (
+              <p className="text-center text-gray-500">No features available.</p>
+            )}
           </div>
         </div>
       </section>

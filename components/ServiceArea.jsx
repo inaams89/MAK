@@ -107,7 +107,7 @@ const ServiceArea = ({ service }) => {
                   {service.image && (
                     <img
                       src={service.image}
-                      alt={service.area}
+                      alt={service.area || 'service area'}
                       className="w-full h-48 object-cover rounded-t-lg mb-4"
                     />
                   )}
