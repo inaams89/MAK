@@ -30,7 +30,6 @@ const portableTextComponents = {
 export default function ServicesSlug({ initialservice }) {
   const [service, setService] = useState(initialservice);
 
-  console.log("initialservice", initialservice);
 
   if (!service) {
     return <div className="font-sans bg-gray-100">No service data available</div>;
@@ -63,7 +62,7 @@ export default function ServicesSlug({ initialservice }) {
           </div>
         )}
 
-        <AccreditationPage />
+        {/* <AccreditationPage /> */}
 
         {service.description2 && (
           <div className="text-gray-800 mb-6 p-8 border-l-4 border-red-500 rounded-xl bg-white/20 backdrop-blur-xs shadow-2xl hover:shadow-3xl hover:border-red-600 transition-all duration-500 hover:scale-[1.02]">
@@ -77,7 +76,7 @@ export default function ServicesSlug({ initialservice }) {
           </div>
         )}
 
-        {service.address && (
+        {/* {service.address && (
           <div className="text-gray-800 mb-6 p-8 border-l-4 border-red-500 rounded-xl bg-white/20 shadow-2xl">
             <h3 className="text-xl font-semibold mb-2">Address</h3>
             <p>{service.address}</p>
@@ -87,12 +86,12 @@ export default function ServicesSlug({ initialservice }) {
               </p>
             )}
           </div>
-        )}
+        )} */}
       </div>
 
-      <Features />
+      {/* <Features />
       <AccreditationPage />
-      <Testimonials />
+      <Testimonials /> */}
       <Footer />
     </div>
   );

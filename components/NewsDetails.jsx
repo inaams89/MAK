@@ -79,7 +79,7 @@ export default function NewsDetail({ initialservice }) {
           </div>
         )}
 
-        <AccreditationPage />
+        {/* <AccreditationPage /> */}
       </div>
 
       <Footer />

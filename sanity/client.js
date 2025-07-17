@@ -43,3 +43,13 @@ export const sanitySerializers = {
     ),
   },
 };
+// Add to lib/sanity.js
+export async function getJobBySlug(slug) {
+  const query = `*[_type == "jobVacancy" && slug.current == $slug][0]`;
+  return client.fetch(query, { slug });
+}
+
+export async function getAllJobSlugs() {
+  const query = `*[_type == "jobVacancy"]{ "slug": slug.current }`;
+  return client.fetch(query);
+}

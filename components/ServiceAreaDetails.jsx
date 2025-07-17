@@ -69,7 +69,7 @@ export default function ServicesAreaDetail({ initialservice }) {
           </div>
         )}
 
-        <AccreditationPage />
+        {/* <AccreditationPage /> */}
 
         {service.description2 && (
           <div className="text-gray-800 mb-6 p-8 border-l-4 border-red-500 rounded-xl bg-white/20 backdrop-blur-xs shadow-2xl hover:shadow-3xl hover:border-red-600 transition-all duration-500 hover:scale-[1.02]">
@@ -90,7 +90,7 @@ export default function ServicesAreaDetail({ initialservice }) {
           </div>
         )}
 
-        {service.address && (
+        {/* {service.address && (
           <div className="text-gray-800 mb-6 p-8 border-l-4 border-red-500 rounded-xl bg-white/20 shadow-2xl">
             <h3 className="text-xl font-semibold mb-2">Address</h3>
             <p>{service.address}</p>
@@ -100,7 +100,7 @@ export default function ServicesAreaDetail({ initialservice }) {
               </p>
             )}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Uncomment if needed */}

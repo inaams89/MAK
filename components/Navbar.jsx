@@ -6,6 +6,7 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhoneAlt, FaEnvelo
 import { RiArrowRightUpLine } from 'react-icons/ri';
 import { client } from '@/sanity/client';
 import { settingsQuery, serviceCategoriesQuery, serviceAreasQuery } from '@/sanity/queries'; // Adjust path to your queries
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Header() {
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for desktop service dropdown
   const [mobileServiceOpen, setMobileServiceOpen] = useState(null); // State for mobile service submenu
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,6 +132,8 @@ export default function Header() {
                 <button
                   className="text-gray-700 font-medium hover:text-red-500 transition duration-300 relative group flex items-center"
                   aria-haspopup="true"
+                  onClick={() => router.push('/service')}
+
                   aria-expanded={dropdownOpen}
                 >
                   Services
@@ -188,6 +192,13 @@ export default function Header() {
               News
               <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
             </Link>
+            <Link
+              href="/job"
+              className="text-gray-700 font-medium hover:text-red-500 transition duration-300 relative group"
+            >
+              Career
+              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
         </div>
 
@@ -214,9 +225,8 @@ export default function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-gradient-to-r from-[#060505] to-[#1a1a1a] text-white py-4 transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-        }`}
+        className={`md:hidden bg-gradient-to-r from-[#060505] to-[#1a1a1a] text-white py-4 transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          }`}
       >
         <ul className="space-y-3 text-center">
           <li>
