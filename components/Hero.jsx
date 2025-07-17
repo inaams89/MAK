@@ -66,31 +66,34 @@ const Hero = ({ slider = [] }) => {
   };
 
   return (
-    <Swiper
-      modules={[Autoplay, Pagination, Navigation]}
-      autoplay={{ delay: 5000, disableOnInteraction: false }}
-      pagination={{ clickable: true }}
-      navigation
-      effect="fade"
-      className="w-full bg-cover bg-center min-h-screen flex items-center text-white"
-      onAutoplayTimeLeft={onAutoplayTimeLeft}
-    >
+   <Swiper
+  modules={[Autoplay, Pagination, Navigation]}
+  autoplay={{ delay: 5000, disableOnInteraction: false }}
+  pagination={{ clickable: true }}
+  navigation
+  effect="fade"
+  className="w-full bg-cover bg-center min-h-screen flex items-center text-white"
+  style={{ minHeight: "100vh" }} // Explicit height to prevent shifts
+  onAutoplayTimeLeft={onAutoplayTimeLeft}
+>
       {slider.length > 0 ? (
         slider.map((slide, index) => (
           <SwiperSlide key={index}>
             <section className="bg-cover bg-center min-h-screen flex items-center text-white">
               {/* Background Image */}
               {slide?.image?.asset?.url ? (
-                <Image
-                  src={slide.image.asset.url}
-                  alt={slide?.title || 'Hero Image'}
-                  fill
-                  priority
-                  quality={80}
-                  className="object-cover object-center brightness-80"
-                  placeholder="blur"
-                  blurDataURL="/globe.svg"
-                />
+               <Image
+  src={slide?.image?.asset?.url || "/default-placeholder.jpg"}
+  alt={slide?.title || "Hero Image"}
+  fill
+  priority
+  fetchPriority="high"
+  quality={80}
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Responsive sizes
+  className="object-cover object-center brightness-80"
+  placeholder="blur"
+  blurDataURL="/globe.svg"
+/>
               ) : (
                 <Image
                   src="/default-placeholder.jpg"
