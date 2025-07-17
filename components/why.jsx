@@ -77,15 +77,7 @@ const [expanded, setExpanded] = useState(false);
 </button>
       )}
     </div>                
-             
-              {/* <div className="mt-6 flex justify-center md:justify-start">
-                <Link href="/why-us" legacyBehavior>
-                  <a className="flex items-center space-x-2 text-red-500 hover:text-red-600 transition duration-300">
-                    <span className="font-semibold">Learn More</span>
-                    <IoArrowForwardOutline size={18} className="animate-bounce-horizontal" />
-                  </a>
-                </Link>
-              </div> */}
+           
             </div>
           </div>
         </div>
