@@ -24,7 +24,7 @@ const Services = ({ services = [] }) => {
               </p>
               <div className="mt-4 flex justify-center md:justify-start">
                 <Link
-                  href="/services"
+                  href="/service"
                   className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition duration-300"
                   aria-label="View all available services"
                 >
