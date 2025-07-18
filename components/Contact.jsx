@@ -42,31 +42,31 @@ export default function Contact({ contactData = {} }) {
   <div className="relative bg-cover bg-center h-[450px]">
     <div className="absolute inset-0 bg-black opacity-60"></div>
     <div className="relative w-full h-[400px] md:h-[500px]">
-      {contactData?.image?.asset ? (
-        <Image
-          src={urlFor(contactData.image).url()}
-          alt={contactData.title || 'Contact Banner'}
-          width={1299}
-          height={400}
-          priority
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <Image
-          src="/default-placeholder.jpg"
-          alt="Default Contact Banner"
-          width={1299}
-          height={400}
-          priority
-          className="w-full h-full object-cover"
-        />
-      )}
+         {contactData?.image ? (
+  <Image
+    src={contactData.image}
+    alt={contactData.title || 'Contact Banner'}
+    width={1299}
+    height={400}
+    priority
+    className="w-full h-full object-cover"
+  />
+) : (
+  <Image
+    src="/images/default-contact-banner.jpg" // Provide a static fallback image
+    alt="Default Contact Banner"
+    width={1299}
+    height={400}
+    priority
+    className="w-full h-full object-cover"
+  />
+)}
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white text-center px-4">
         <h1 className="text-3xl md:text-5xl font-bold mb-2 animate-fade-in-down">
           {contactData?.title?.toUpperCase() || 'CONTACT US'}
         </h1>
-        {contactData?.subtitle && (
-          <p className="mt-2 text-lg font-light opacity-80">{contactData.subtitle}</p>
+        {contactData?.sutitle && (
+          <p className="mt-2 text-lg font-light opacity-80">{contactData.sutitle}</p>
         )}
       </div>
     </div>
@@ -80,6 +80,7 @@ export default function Contact({ contactData = {} }) {
         <div className="space-y-8 bg-white/30 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20 transform transition-all hover:scale-105 duration-300 hover:shadow-3xl">
           <h2 className="text-4xl font-bold text-gray-800 border-b-2 pb-4 border-gradient-to-r from-red-600 to-red-800">
             Get in Touch
+          
           </h2>
           <p className="text-lg text-gray-600">
             {contactData?.content || "We'd love to hear from you. Reach out for any questions or inquiries."}
@@ -132,10 +133,10 @@ export default function Contact({ contactData = {} }) {
               <div>
                 <p className="font-semibold">Phone:</p>
                 <a
-                  href={`tel:${contactData?.phone || '+44 123 456 7890'}`}
+                  href={`tel:${contactData?.phone }`}
                   className="text-gray-600 hover:text-purple-600 transition-colors duration-300"
                 >
-                  {contactData?.phone || '+44 123 456 7890'}
+                  {contactData?.phone}
                 </a>
               </div>
             </div>

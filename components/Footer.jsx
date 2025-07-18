@@ -14,6 +14,10 @@ export default function Footer() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [email, setEmail] = useState('');
+  const [formStatus, setFormStatus] = useState(null);
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +40,27 @@ export default function Footer() {
 
     fetchData();
   }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus(null); // Reset status
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setFormStatus(result.message || 'Subscribed successfully!');
+        setEmail('');
+      } else {
+        setFormStatus(`Error: ${result.error || 'Failed to subscribe'}`);
+      }
+    } catch (error) {
+      setFormStatus('Error: ' + error.message);
+    }
+  };
+
   console.log("settings",settings);
 
   if (loading) return <div className="text-center py-4 text-white">Loading...</div>;
@@ -150,21 +175,36 @@ export default function Footer() {
              
             </ul>
             <div className="mt-4 text-center">
-              <H6 className="text-xl text-center font-semibold mb-4">{footerContent.title || 'Join Our Newsletter'}</H6>
-              <form>
-                <input
-                  type="email"
-                  className="px-4 py-2 rounded-l-lg border-2 border-white bg-gray-800 text-white focus:outline-none"
-                  placeholder="Enter your email"
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-red-500 ml-0.2 text-white font-bold rounded-r-lg hover:bg-opacity-60 hover:bg-white transition"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
+            <h6 className="text-xl text-center font-semibold mb-4">
+              Join Our Newsletter
+            </h6>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="px-4 py-2 rounded-l-lg border-2 border-white bg-gray-800 text-white focus:outline-none"
+                placeholder="Enter your email"
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 py-2.5 bg-red-500 ml-0.5 text-white font-bold rounded-r-lg hover:bg-opacity-60 hover:bg-white transition"
+              >
+                Subscribe
+              </button>
+            </form>
+            {formStatus && (
+              <p
+                className={`mt-4 text-center ${
+                  formStatus.includes('Error') ? 'text-red-500' : 'text-green-500'
+                }`}
+              >
+                {formStatus}
+              </p>
+            )}
+          </div>
+
           </div>
         </div>
 

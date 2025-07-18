@@ -1,4 +1,3 @@
-// app/contact/page.jsx
 import { client } from '@/sanity/client';
 import Contact from '@/components/Contact';
 
@@ -46,10 +45,10 @@ export async function fetchContactData() {
     const contactData = await client.fetch(
       `*[_type == "contact"][0]{
         title,
-        subtitle,
+        sutitle,
         content,
         "image": image.asset->url,
-        image { alt },
+        "imageAlt": image.alt,
         email,
         phone,
         address,
@@ -68,6 +67,7 @@ export async function fetchContactData() {
       return null;
     }
 
+    console.log('Fetched Contact Data:', contactData); // Debug fetched data
     return contactData;
   } catch (error) {
     console.error('Error fetching contact data:', error);
@@ -77,7 +77,5 @@ export async function fetchContactData() {
 
 export default async function Page() {
   const contactData = await fetchContactData();
-
-
   return <Contact contactData={contactData} />;
 }

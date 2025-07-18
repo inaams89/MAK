@@ -8,6 +8,7 @@ export const settingsQuery = `*[_type == "settingContent"][0] {
   linkedin,
   addresstitle,
   city,
+  copyrights,
   house,
   street,
   address,
